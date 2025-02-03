@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 
 class NotepadScreen extends StatefulWidget {
@@ -19,7 +18,8 @@ class _NotepadScreenState extends State<NotepadScreen> {
     super.initState();
   }
 
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
+  final TextEditingController _updateController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,25 +81,54 @@ class _NotepadScreenState extends State<NotepadScreen> {
                                         onPressed: () {
                                           showDialog(
                                               context: context,
-                                              builder: (context) {
+                                              builder: (_) {
                                                 return Dialog(
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            20.0),
-                                                    child: Column(
-                                                      children: [
-                                                        TextField(
-                                                          decoration:
-                                                              InputDecoration(
-                                                                  hintText:
-                                                                      "Inter update  data"),
-                                                        ),
-                                                        ElevatedButton(
-                                                            onPressed: () {},
+                                                  child: SizedBox(
+                                                    height: 200,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              20.0),
+                                                      child: Column(
+                                                        children: [
+                                                          TextField(
+                                                            controller:
+                                                                _updateController,
+                                                            decoration:
+                                                                InputDecoration(
+                                                                    hintText:
+                                                                        "Inter update  data"),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                          SizedBox(
+                                                            width:
+                                                                double.infinity,
                                                             child:
-                                                                Text("Update"))
-                                                      ],
+                                                                ElevatedButton(
+                                                                    style: ElevatedButton.styleFrom(
+                                                                        backgroundColor:
+                                                                            Colors
+                                                                                .green),
+                                                                    onPressed:
+                                                                        () async {
+                                                                      final updateData =
+                                                                          _updateController
+                                                                              .text;
+                                                                      notepad!.putAt(
+                                                                          index,
+                                                                          updateData);
+                                                                      _updateController
+                                                                          .clear();
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    },
+                                                                    child: Text(
+                                                                        "Update")),
+                                                          )
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
                                                 );
@@ -112,8 +141,9 @@ class _NotepadScreenState extends State<NotepadScreen> {
                                       ),
                                       IconButton(
                                           onPressed: () async {
-                                           await notepad!.deleteAt(index);
-                                           Fluttertoast.showToast(msg: 'Deleted Successfully');
+                                            await notepad!.deleteAt(index);
+                                            Fluttertoast.showToast(
+                                                msg: 'Deleted Successfully');
                                           },
                                           icon: Icon(
                                             Icons.delete,
