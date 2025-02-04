@@ -32,7 +32,6 @@ class _NotepadScreenState extends State<NotepadScreen> {
                 controller: _controller,
                 decoration: InputDecoration(
                     prefixIcon: Icon(Icons.import_contacts),
-                    suffixIcon: Icon(Icons.insert_comment_sharp),
                     hintText: "writing something",
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),

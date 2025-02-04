@@ -7,10 +7,8 @@ import 'package:hive_flutter/adapters.dart';
 import 'view/screen/notepad_screen.dart';
 
 Future<void> main() async {
-
+ WidgetsFlutterBinding.ensureInitialized();
  await Hive.initFlutter();
-
-
   Box box = await Hive.openBox('notepad');
   runApp(const MyApp());
 }
